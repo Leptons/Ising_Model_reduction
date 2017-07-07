@@ -14,9 +14,9 @@ int main(){
 
 	inputSat(n, cnf);
 
-	sat_naesat(n, cnf, n2, cnf2); cerr<<"sat_naesat: ok"<<endl;
-	sat_sat3(n2, cnf2, n3, cnf3); cerr<<"sat_sat3: ok"<<endl;
-	naesat3_maxcut(n3, cnf3, g); cerr<<"naesat3_maxcut: ok"<<endl;
+	sat_naesat(n, cnf, n2, cnf2);
+	sat_sat3(n2, cnf2, n3, cnf3);
+	naesat3_maxcut(n3, cnf3, g);
 	maxcut_isingModel(g, g2);
 
 	outputIsingModel(g2);

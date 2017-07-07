@@ -34,11 +34,9 @@ void naesat3_maxcut(int n, const vector<vector<int> > &cnf, wgraph &g){
 		g[n+i].push_back((edge){1, i});
 	}
 	for(int i = 0; i < cnf.size(); i++){
-		if(cnf[i].size()<3) return;
 		int x[3];
 		for(int j = 0; j < 3; j++) x[j] = getV(n, cnf[i][j]);
 		for(int j = 0; j < 3; j++){
-			if(x[j]>=2*n) return;
 			int j2 = (j+1)%3;
 			g[x[j]].push_back((edge){1, x[j2]});
 			g[x[j2]].push_back((edge){1, x[j]});
