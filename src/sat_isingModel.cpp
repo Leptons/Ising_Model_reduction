@@ -15,9 +15,9 @@ int main(){
 	wgraph g2;
 	igraph g3;
 
-	sat2indset(n, cnf, g);
-	indset2maxcut(g, g2);
-	maxcut2isingModel(g2, g3);
+	sat_indset(n, cnf, g);
+	indset_maxcut(g, g2);
+	maxcut_isingModel(g2, g3);
 
 	outputIsingModel(g3);
 

@@ -33,3 +33,11 @@
 
 # Swaps
 *.swp
+
+# Test Files
+*.cnf
+*.sat
+*.maxcut
+*.i
+*.ising
+*.o
