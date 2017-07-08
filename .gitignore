@@ -41,3 +41,4 @@
 *.i
 *.ising
 *.o
+*.graph
