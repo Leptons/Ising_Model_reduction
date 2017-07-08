@@ -1,4 +1,4 @@
-PROGRAMS = sat_isingModel sat_isingModel2
+PROGRAMS = sat_isingModel sat_isingModel2 maxsat_isingModel
 OBJS = io.o reduction.o
 
 

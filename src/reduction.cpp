@@ -27,12 +27,8 @@ void sat_indset(int n, const vector<vector<int> > &cnf, graph &g){
 	}
 }
 
-void naesat3_maxcut(int n, const vector<vector<int> > &cnf, wgraph &g){
+void naesat3_maxcut(int n, const vector<vector<int> > &cnf, wgraph &g, bool maximize){
 	g = wgraph(2*n);
-	for(int i = 0; i < n; i++){
-		g[i].push_back((edge){1, n+i});
-		g[n+i].push_back((edge){1, i});
-	}
 	for(int i = 0; i < cnf.size(); i++){
 		int x[3];
 		for(int j = 0; j < 3; j++) x[j] = getV(n, cnf[i][j]);
@@ -41,6 +37,16 @@ void naesat3_maxcut(int n, const vector<vector<int> > &cnf, wgraph &g){
 			g[x[j]].push_back((edge){1, x[j2]});
 			g[x[j2]].push_back((edge){1, x[j]});
 		}
+	}
+	int w = 1;
+	if(maximize){
+		for(int i = 0; i < n; i++){
+			w = max(w, min<int>(g[i].size(), g[n+i].size())+1);
+		}
+	}
+	for(int i = 0; i < n; i++){
+		g[i].push_back((edge){w, n+i});
+		g[n+i].push_back((edge){w, i});
 	}
 }
 
