@@ -1,4 +1,5 @@
 #include "reduction.hpp"
+#include <algorithm>
 
 using namespace std;
 
@@ -47,6 +48,17 @@ void naesat3_maxcut(int n, const vector<vector<int> > &cnf, wgraph &g, bool maxi
 	for(int i = 0; i < n; i++){
 		g[i].push_back((edge){w, n+i});
 		g[n+i].push_back((edge){w, i});
+	}
+	for(int i = 0; i < n; i++){
+		sort(g[i].begin(), g[i].end(),
+			[](const edge &a, const edge &b){ return a.dst < b.dst; });
+		for(int j = g[i].size()-1; j >= 0; j--){
+			if(g[i][j].dst == g[i][j+1].dst){
+				g[i][j].cst += g[i][j+1].cst;
+				g[i][j+1].cst = 0;
+			}
+		}
+		g[i].erase(remove_if(g[i].begin(), g[i].end(), [](const edge &a){ return a.cst == 0;}), g[i].end());
 	}
 }
 
