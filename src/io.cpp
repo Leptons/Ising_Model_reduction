@@ -1,4 +1,5 @@
 #include "io.hpp"
+#include <set>
 #include <iostream>
 #include <sstream>
 
@@ -18,6 +19,44 @@ void inputSat(int &n, vector<vector<int> > &cnf){ // assume SAT competition form
 		int x;
 		while(cin >> x, x != 0){
 			cnf[i].push_back(x);
+		}
+	}
+}
+
+void inputIndset(graph &g, bool isDirected, bool isVertexBased, bool isZeroIndexed){
+	g.clear();
+	int n, m;
+	cin >> n >> m;
+	g = graph(n);
+	vector<set<int> > st(n);
+	if(isVertexBased){
+		cin.ignore();
+		for(int i = 0; i < n; i++){
+			string s;
+			getline(cin, s);
+			stringstream ss(s);
+			int u;
+			while(ss >> u){
+				if(!isZeroIndexed) u--;
+				if(isDirected){
+					if(st[u].count(i)) continue;
+					st[i].insert(u);
+				}
+				g[i].push_back(u);
+				g[u].push_back(i);
+			}
+		}
+	} else {
+		for(int i = 0; i < m; i++){
+			int u, v;
+			cin >> u >> v;
+			if(!isZeroIndexed) {u--; v--;}
+			if(isDirected){
+				if(st[v].count(u)) continue;
+				st[u].insert(v);
+			}
+			g[u].push_back(v);
+			g[v].push_back(u);
 		}
 	}
 }
