@@ -26,7 +26,12 @@ void inputSat(int &n, vector<vector<int> > &cnf){ // assume SAT competition form
 void inputIndset(graph &g, bool isDirected, bool isVertexBased, bool isZeroIndexed){
 	g.clear();
 	int n, m;
-	cin >> n >> m;
+	{
+		string s;
+		while(getline(cin, s), s[0] == '#');
+		stringstream ss(s);
+		ss >> n >> m;
+	}
 	g = graph(n);
 	vector<set<int> > st(n);
 	if(isVertexBased){
@@ -38,10 +43,9 @@ void inputIndset(graph &g, bool isDirected, bool isVertexBased, bool isZeroIndex
 			int u;
 			while(ss >> u){
 				if(!isZeroIndexed) u--;
-				if(isDirected){
-					if(st[u].count(i)) continue;
-					st[i].insert(u);
-				}
+				if(st[i].count(u)) continue;
+				if(isDirected && st[u].count(i)) continue;
+				st[i].insert(u);
 				g[i].push_back(u);
 				g[u].push_back(i);
 			}
@@ -51,10 +55,9 @@ void inputIndset(graph &g, bool isDirected, bool isVertexBased, bool isZeroIndex
 			int u, v;
 			cin >> u >> v;
 			if(!isZeroIndexed) {u--; v--;}
-			if(isDirected){
-				if(st[v].count(u)) continue;
-				st[u].insert(v);
-			}
+			if(st[u].count(v)) continue;
+			if(isDirected && st[v].count(u)) continue;
+			st[u].insert(v);
 			g[u].push_back(v);
 			g[v].push_back(u);
 		}

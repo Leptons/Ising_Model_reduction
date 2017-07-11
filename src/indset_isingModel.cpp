@@ -24,7 +24,7 @@ int main(int argc, char *argv[]){
 		else cerr << "Unknown command line flag: " + option << endl;
 	}
 
-	inputIndset(g, isDirected, isVertexBased, isZeroIndexed);
+	inputIndset(g, isDirected, isVertexBased, isZeroIndexed); 
 
 	indset_maxcut(g, g2);
 	maxcut_isingModel(g2, g3);
