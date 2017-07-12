@@ -20,6 +20,7 @@ void rmMEMaxcut(wgraph &g){
 		g[i].erase(remove_if(g[i].begin(), g[i].end(), [](const edge &a){ return a.cst == 0;}), g[i].end());
 	}
 }
+
 void sat_indset(int n, const vector<vector<int> > &cnf, graph &g){
 	g = graph(2*n);
 	for(int i = 0; i < n; i++){ // variable gadget
@@ -133,4 +134,3 @@ void maxcut_isingModel(const wgraph &g, igraph &g2){
 		}
 	}
 }
-
