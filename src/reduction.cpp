@@ -1,10 +1,25 @@
 #include "reduction.hpp"
 #include <algorithm>
+#include <iostream>
 
 using namespace std;
 
 int getV(int n, int x){ return x > 0 ? x-1 : n-x-1; }
+int sgn(int x){ return x == 0 ? 0 : (x > 0 ? 1 : -1); }
 
+void rmMEMaxcut(wgraph &g){
+	for(int i = 0; i < g.size(); i++){
+		sort(g[i].begin(), g[i].end(),
+			[](const edge &a, const edge &b){ return a.dst < b.dst; });
+		for(int j = g[i].size()-1; j >= 0; j--){
+			if(g[i][j].dst == g[i][j+1].dst){
+				g[i][j].cst += g[i][j+1].cst;
+				g[i][j+1].cst = 0;
+			}
+		}
+		g[i].erase(remove_if(g[i].begin(), g[i].end(), [](const edge &a){ return a.cst == 0;}), g[i].end());
+	}
+}
 void sat_indset(int n, const vector<vector<int> > &cnf, graph &g){
 	g = graph(2*n);
 	for(int i = 0; i < n; i++){ // variable gadget
@@ -49,17 +64,22 @@ void naesat3_maxcut(int n, const vector<vector<int> > &cnf, wgraph &g, bool maxi
 		g[i].push_back((edge){w, n+i});
 		g[n+i].push_back((edge){w, i});
 	}
-	for(int i = 0; i < n; i++){
-		sort(g[i].begin(), g[i].end(),
-			[](const edge &a, const edge &b){ return a.dst < b.dst; });
-		for(int j = g[i].size()-1; j >= 0; j--){
-			if(g[i][j].dst == g[i][j+1].dst){
-				g[i][j].cst += g[i][j+1].cst;
-				g[i][j+1].cst = 0;
-			}
+	rmMEMaxcut(g);
+}
+
+void naesat3_maxcut2(int n, const vector<vector<int> > &cnf, wgraph &g){
+	g = wgraph(n);
+	for(int i = 0; i < cnf.size(); i++){
+		int x[3];
+		for(int j = 0; j < 3; j++) x[j] = abs(cnf[i][j])-1;
+		for(int j = 0; j < 3; j++){
+			int j2 = (j+1)%3;
+			int ew = sgn(cnf[i][j])*sgn(cnf[i][j2]);
+			g[x[j]].push_back((edge){ew, x[j2]});
+			g[x[j2]].push_back((edge){ew, x[j]});
 		}
-		g[i].erase(remove_if(g[i].begin(), g[i].end(), [](const edge &a){ return a.cst == 0;}), g[i].end());
 	}
+	rmMEMaxcut(g);
 }
 
 void sat_naesat(int n, const vector<vector<int> > &cnf, int &n2, vector<vector<int> > &cnf2){
