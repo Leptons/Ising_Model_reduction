@@ -7,15 +7,18 @@ using namespace std;
 int getV(int n, int x){ return x > 0 ? x-1 : n-x-1; }
 int sgn(int x){ return x == 0 ? 0 : (x > 0 ? 1 : -1); }
 
-void rmMEMaxcut(wgraph &g){
+void rmSMEMaxcut(wgraph &g){
 	for(int i = 0; i < g.size(); i++){
 		sort(g[i].begin(), g[i].end(),
 			[](const edge &a, const edge &b){ return a.dst < b.dst; });
-		for(int j = g[i].size()-1; j >= 0; j--){
+		for(int j = g[i].size()-2; j >= 0; j--){
 			if(g[i][j].dst == g[i][j+1].dst){
 				g[i][j].cst += g[i][j+1].cst;
 				g[i][j+1].cst = 0;
 			}
+		}
+		for(int j = 0; j < g[i].size(); j++){
+			if(i == g[i][j].dst) g[i][j].cst = 0;
 		}
 		g[i].erase(remove_if(g[i].begin(), g[i].end(), [](const edge &a){ return a.cst == 0;}), g[i].end());
 	}
@@ -65,7 +68,7 @@ void naesat3_maxcut(int n, const vector<vector<int> > &cnf, wgraph &g, bool maxi
 		g[i].push_back((edge){w, n+i});
 		g[n+i].push_back((edge){w, i});
 	}
-	rmMEMaxcut(g);
+	rmSMEMaxcut(g);
 }
 
 void naesat3_maxcut2(int n, const vector<vector<int> > &cnf, wgraph &g){
@@ -80,7 +83,7 @@ void naesat3_maxcut2(int n, const vector<vector<int> > &cnf, wgraph &g){
 			g[x[j2]].push_back((edge){ew, x[j]});
 		}
 	}
-	rmMEMaxcut(g);
+	rmSMEMaxcut(g);
 }
 
 void sat_naesat(int n, const vector<vector<int> > &cnf, int &n2, vector<vector<int> > &cnf2){
