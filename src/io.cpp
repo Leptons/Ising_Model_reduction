@@ -13,7 +13,7 @@ void inputSat(int &n, vector<vector<int> > &cnf){ // assume SAT competition form
 	stringstream ss(s);
 	int m;
 	string igns1, igns2; // ignore first strings
-	ss >> igns1 >> igns2 >> n >> m; cin.ignore();
+	ss >> igns1 >> igns2 >> n >> m;
 	cnf = vector<vector<int> >(m);
 	for(int i = 0; i < m; i++){
 		int x;
@@ -74,7 +74,7 @@ void outputIndset(const graph &g){
 	}
 }
 
-void outputIsingModel(const igraph &g){
+void outputIsingModel(const igraph &g, int opt){
 	int n = g.size();
 	int m = 0;
 	double offset = 0.0;
@@ -82,7 +82,9 @@ void outputIsingModel(const igraph &g){
 	m /= 2;
 	for(int i = 0; i < n; i++) for(int j = 0; j < g[i].size(); j++) offset += g[i][j].cst;
 	offset /= 2.0;
-	cout << n << " " << m << " " << offset << " is edges' sum" << endl;
+	cout << n << " " << m << " " << offset;
+	if(opt >= 0) cout << " " << opt;
+	cout << endl;
 	for(int i = 0; i < g.size(); i++){
 		for(int j = 0; j < g[i].size(); j++){
 			if(i < g[i][j].dst) cout << i+1 << " " << g[i][j].dst+1 << " " << g[i][j].cst << endl;

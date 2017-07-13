@@ -71,8 +71,9 @@ void naesat3_maxcut(int n, const vector<vector<int> > &cnf, wgraph &g, bool maxi
 	rmSMEMaxcut(g);
 }
 
-void naesat3_maxcut2(int n, const vector<vector<int> > &cnf, wgraph &g){
+void naesat3_maxcut2(int n, const vector<vector<int> > &cnf, wgraph &g, int &opt){
 	g = wgraph(n);
+	opt = cnf.size();
 	for(int i = 0; i < cnf.size(); i++){
 		int x[3];
 		for(int j = 0; j < 3; j++) x[j] = abs(cnf[i][j])-1;
@@ -81,8 +82,10 @@ void naesat3_maxcut2(int n, const vector<vector<int> > &cnf, wgraph &g){
 			int ew = sgn(cnf[i][j])*sgn(cnf[i][j2]);
 			g[x[j]].push_back((edge){ew, x[j2]});
 			g[x[j2]].push_back((edge){ew, x[j]});
+			opt += ew;
 		}
 	}
+	opt /= 2;
 	rmSMEMaxcut(g);
 }
 
@@ -97,7 +100,7 @@ void sat_naesat(int n, const vector<vector<int> > &cnf, int &n2, vector<vector<i
 void sat_sat3(int n, const vector<vector<int> > &cnf, int &n2, vector<vector<int> > &cnf2){
 	n2 = n;
 	cnf2.clear();
-	for(int i = 0; i < n; i++){
+	for(int i = 0; i < cnf.size(); i++){
 		int l = cnf[i].size();
 		if(l <= 3){
 			cnf2.push_back(cnf[i]);
