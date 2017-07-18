@@ -1,9 +1,32 @@
 #include "io.hpp"
+#include <vector>
 #include <set>
+#include <algorithm>
 #include <iostream>
 #include <sstream>
 
 using namespace std;
+
+void compress(int &n, int m, vector<vector<int> > &cnf){
+	vector<int> x, z(n);
+	x.reserve(m);
+	for(auto &u: cnf){
+		for(auto &v: u){
+			x.push_back(abs(v));
+		}
+	}
+	sort(x.begin(), x.end());
+	x.erase(unique(x.begin(), x.end()), x.end());
+	for(int i = 0; i < x.size(); i++){
+		z[x[i]-1] = i+1;
+	}
+	for(auto &u: cnf){
+		for(auto &v: u){
+			v = z[abs(v)-1]*(v>0?1:-1);
+		}
+	}
+	n = x.size();
+}
 
 void inputSat(int &n, vector<vector<int> > &cnf){ // assume SAT competition format
 	string s;
@@ -21,6 +44,7 @@ void inputSat(int &n, vector<vector<int> > &cnf){ // assume SAT competition form
 			cnf[i].push_back(x);
 		}
 	}
+	compress(n, m, cnf);
 }
 
 void inputIndset(graph &g, bool isDirected, bool isVertexBased, bool isZeroIndexed){
