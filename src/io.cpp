@@ -75,10 +75,19 @@ void inputIndset(graph &g, bool isDirected, bool isVertexBased, bool isZeroIndex
 			}
 		}
 	} else {
+		vector<vector<int> > input(m);
 		for(int i = 0; i < m; i++){
 			int u, v;
 			cin >> u >> v;
-			if(!isZeroIndexed) {u--; v--;}
+			if(isZeroIndexed){u++; v++;}
+			input[i].push_back(u);
+			input[i].push_back(v);
+			n = max(n, max(u, v));
+		}
+		compress(n, m*2, input);
+		for(int i = 0; i < m; i++){
+			int u = input[i][0], v = input[i][1];
+			u--; v--;
 			if(st[u].count(v)) continue;
 			if(isDirected && st[v].count(u)) continue;
 			st[u].insert(v);

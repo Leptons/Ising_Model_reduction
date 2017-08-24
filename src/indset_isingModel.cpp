@@ -12,7 +12,7 @@ int main(int argc, char *argv[]){
 	wgraph g2;
 	igraph g3;
 
-	bool isDirected = false, isVertexBased = false, isZeroIndexed = false;
+	bool isDirected = true, isVertexBased = false, isZeroIndexed = false;
 	for(int i = 1; i < argc; i++){
 		string option(argv[i]);
 		if(option == "-undirected" || option == "-u") isDirected = false;
@@ -24,7 +24,7 @@ int main(int argc, char *argv[]){
 		else cerr << "Unknown command line flag: " + option << endl;
 	}
 
-	inputIndset(g, isDirected, isVertexBased, isZeroIndexed); 
+	inputIndset(g, isDirected, isVertexBased, isZeroIndexed);
 
 	indset_maxcut(g, g2);
 	maxcut_isingModel(g2, g3);
