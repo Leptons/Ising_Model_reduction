@@ -12,7 +12,7 @@ int main(int argc, char *argv[]){
 	wgraph g2;
 	igraph g3;
 
-	bool isDirected = true, isVertexBased = false, isZeroIndexed = false;
+	bool isDirected = true, isVertexBased = false, isZeroIndexed = true;
 	for(int i = 1; i < argc; i++){
 		string option(argv[i]);
 		if(option == "-undirected" || option == "-u") isDirected = false;
