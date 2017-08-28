@@ -88,6 +88,7 @@ void inputIndset(graph &g, bool isDirected, bool isVertexBased, bool isZeroIndex
 		for(int i = 0; i < m; i++){
 			int u = input[i][0], v = input[i][1];
 			u--; v--;
+			if(u == v) continue;
 			if(st[u].count(v)) continue;
 			if(isDirected && st[v].count(u)) continue;
 			st[u].insert(v);
